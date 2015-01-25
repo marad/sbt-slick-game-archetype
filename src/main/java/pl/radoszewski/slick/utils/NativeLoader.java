@@ -1,5 +1,7 @@
 package pl.radoszewski.slick.utils;
 
+import org.lwjgl.LWJGLUtil;
+
 import java.io.*;
 import java.lang.reflect.Field;
 
@@ -83,7 +85,45 @@ public class NativeLoader {
             System.load(temp.getAbsolutePath());
             System.out.println("Loaded " + file.getName() + "...");
         }
-
     }
 
+    public static String mapLibraryName(String name) {
+        int platform = LWJGLUtil.getPlatform();
+        String bits = "64".equals(System.getProperty("sun.arch.data.model")) ? "64" : "";
+
+        if (platform == LWJGLUtil.PLATFORM_LINUX) {
+            return "lib" + name + bits + ".so";
+        } else if (platform == LWJGLUtil.PLATFORM_MACOSX) {
+            return "lib" + name + bits + ".dylib";
+        } else if (platform == LWJGLUtil.PLATFORM_WINDOWS) {
+            return name + bits + ".dll";
+        } else {
+            throw new RuntimeException("Running on unrecognised platform!");
+        }
+    }
+
+
+    public static void extractLwjglNatives() {
+        try {
+            extractFromjar("/" + mapLibraryName("lwjgl"));
+            extractFromjar("/" + mapLibraryName("openal"));
+
+            // jinput is special...
+            int platform = LWJGLUtil.getPlatform();
+            String bits = "64".equals(System.getProperty("sun.arch.data.model")) ? "64" : "";
+            if (platform == LWJGLUtil.PLATFORM_LINUX) {
+                extractFromjar("/libjinput-linux" + bits + ".so");
+            } else if (platform == LWJGLUtil.PLATFORM_MACOSX) {
+                extractFromjar("/libjinput-osx.dylib");
+                extractFromjar("/libjinput-osx.jnilib");
+            } else if (platform == LWJGLUtil.PLATFORM_WINDOWS) {
+                bits = "64".equals(System.getProperty("sun.arch.data.model")) ? "_64" : "";
+                extractFromjar("/jinput-dx8" + bits + ".dll");
+                extractFromjar("/jinput-raw" + bits + ".dll");
+                extractFromjar("/jinput-wintab.dll");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

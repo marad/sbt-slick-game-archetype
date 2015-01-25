@@ -22,10 +22,7 @@ public class Example extends BasicGame {
   public static void main(String[] args) throws IOException {
 
     try {
-      // linux only for now
-      NativeLoader.extractFromjar("/liblwjgl64.so");
-      NativeLoader.extractFromjar("/libjinput-linux64.so");
-      NativeLoader.extractFromjar("/libopenal64.so");
+      NativeLoader.extractLwjglNatives();
     } catch (Throwable ignored) { }
 
     try {
