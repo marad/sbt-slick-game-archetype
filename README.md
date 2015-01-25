@@ -3,6 +3,11 @@ Slick Game Archetype
 
 This project is a basic boostrap for creating Slick2D games using SBT as build tool.
 
+## Artemis Framework
+
+Artemis is small and lightweight yet powerfull entity framework. For more information
+please refer to the [Artemis home page](http://gamadu.com/artemis/)
+
 ## Why SBT?
 
 I decided to use because I wanted to be able to create games also with Scala language.
