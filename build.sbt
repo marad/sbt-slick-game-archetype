@@ -1,3 +1,5 @@
+packAutoSettings
+
 name := "slick-game-archetype"
 
 version := "1.0"
@@ -25,7 +27,8 @@ unmanagedBase := baseDirectory.value / "lib"
 fork in run := true
 
 packageOptions in (Compile, packageBin) += 
-    Package.ManifestAttributes( java.util.jar.Attributes.Name.CLASS_PATH -> "lwjgl.jar" )
+    Package.ManifestAttributes( java.util.jar.Attributes.Name.CLASS_PATH -> "" )
 
 assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = false)
- 
+
+excludeFilter in libraryDependencies in Runtime := "scala-library.2.11.4.jar"

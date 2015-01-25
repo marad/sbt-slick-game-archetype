@@ -1,8 +1,7 @@
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
+import pl.radoszewski.slick.utils.NativeLoader;
+
+import java.io.IOException;
 
 public class Example extends BasicGame {
   public Example(String gameName) {
@@ -20,7 +19,15 @@ public class Example extends BasicGame {
     g.drawString("Hello World!", 50, 50);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
+
+    try {
+      // linux only for now
+      NativeLoader.extractFromjar("/liblwjgl64.so");
+      NativeLoader.extractFromjar("/libjinput-linux64.so");
+      NativeLoader.extractFromjar("/libopenal64.so");
+    } catch (Throwable ignored) { }
+
     try {
       AppGameContainer container;
       container = new AppGameContainer(new Example("Example Game"));
