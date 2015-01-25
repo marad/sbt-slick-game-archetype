@@ -12,8 +12,6 @@ public class NativeExtractor {
     static {
         extractPath = setupExtractPath();
         setupLibraryPath(extractPath);
-
-        System.out.println("Will extract libraries to " + extractPath);
     }
 
     private static String setupExtractPath() {
