@@ -5,7 +5,7 @@ import org.lwjgl.LWJGLUtil;
 import java.io.*;
 import java.lang.reflect.Field;
 
-public class NativeLoader {
+public class NativeExtractor {
 
     private static String extractPath;
 
@@ -45,7 +45,7 @@ public class NativeLoader {
         int readBytes = 0;
 
         try(
-                InputStream is = NativeLoader.class.getResourceAsStream(path);
+                InputStream is = NativeExtractor.class.getResourceAsStream(path);
                 OutputStream os = new FileOutputStream(temp)
         ) {
             if (is == null) {
@@ -57,34 +57,6 @@ public class NativeLoader {
             System.out.println("Extracted " + file.getName() + "...");
         }
 
-    }
-
-    public static void loadFromClassPath(String path) throws IOException {
-        File file = new File(path);
-        String[] name = file.getName().split("\\.", 2);
-        String prefix = name[0];
-        String suffix = "." + name[1];
-
-        File temp = File.createTempFile(prefix, suffix);
-        temp.deleteOnExit();
-
-        byte[] buffer = new byte[1024];
-        int readBytes = 0;
-
-        try(
-                InputStream is = NativeLoader.class.getResourceAsStream(path);
-                OutputStream os = new FileOutputStream(temp)
-        ) {
-            if (is == null) {
-                throw new FileNotFoundException("Couldn't find library to extract!");
-            }
-            while((readBytes = is.read(buffer)) != -1) {
-                os.write(buffer, 0, readBytes);
-            }
-
-            System.load(temp.getAbsolutePath());
-            System.out.println("Loaded " + file.getName() + "...");
-        }
     }
 
     public static String mapLibraryName(String name) {
